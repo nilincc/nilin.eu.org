@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Hello, World</title>
+    <style type="text/css">
+        html {
+            height: 100%
+        }
+
+        body {
+            height: 100%;
+            margin: 0px;
+            padding: 0px
+        }
+
+        #container {
+            height: 100%
+        }
+    </style>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=1MhlQykYEfAZIBWwnf4d2FoClz4KRL4D">
+    </script>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script type="text/javascript">
+        var map = new BMapGL.Map("container");// 创建地图实例 
+        var point = new BMapGL.Point(105.59123, 30.548022);// 创建点坐标，打开页面中心点
+        map.centerAndZoom(point, 6);// 初始化地图，设置中心点坐标和地图级别 
+        map.enableScrollWheelZoom(true); //启用滚轮放大缩小
+        map.setMapStyleV2({
+            styleId: '样式ID'
+        });//地图样式
+
+
+        const markeArray = [
+            {
+                longitude: 118.4308,  //经度
+                latitude: 31.3543,    //纬度
+                richText: `<h4 style='margin:0 0 6px 0;'>芜湖</h4> 2019.4.5点亮
+                        <img style='float:right;margin:0 2px 11px' id='imgDemo' src='图片URL' width='139' height='104'/>
+                        <p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>
+                        地址：地处中国华东地区，安徽省东南部，西汉武帝元封二年前置县，因“蓄水不深而多生芜藻”始名“芜湖”。
+                        </p>`
+            },
+
+            {
+                longitude: 104.0601,  //经度
+                latitude: 30.5994,    //纬度
+                richText: `<h4 style='margin:0 0 6px 0;'>成都</h4> 2001.2.1点亮
+                        <img style='float:right;margin:0 2px 11px' id='imgDemo' src='图片URL' width='139' height='104'/>
+                        <p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>
+                        地址：位于中国四川省中部，为四川省省会，国家中心城市。
+                        </p>`
+            },
+        ];
+
+        markeArray.forEach(item => {
+            let marker1 = new BMapGL.Marker(new BMapGL.Point(item.longitude, item.latitude));// 创建点标记
+
+            map.addOverlay(marker1);// 在地图上添加点标记
+            // 创建信息窗口
+            var opts = {
+                width: 50,
+                height: 25,
+                title: item.title,
+            };
+            var infoWindow = new BMapGL.InfoWindow(item.richText);
+            // 点标记添加点击事件
+            marker1.addEventListener('click', function () {
+                map.openInfoWindow(infoWindow, new BMapGL.Point(item.longitude, item.latitude)); // 开启信息窗口
+            });
+
+        });
+    </script>
+</body>
+
+</html>
